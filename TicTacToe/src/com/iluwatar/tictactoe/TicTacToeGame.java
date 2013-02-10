@@ -23,13 +23,17 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	
 	private TicTacToeState gameState;
 	
+	float xSize;
+	float ySize;
+	
 	@Override
 	public void create() {
 		
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(1, h/w);
+		camera = new OrthographicCamera(w, h);
+//		camera.setToOrtho(false, w, h);
 		batch = new SpriteBatch();
 		
 		bgTexture = new Texture(Gdx.files.internal("data/bg.png"));
@@ -40,7 +44,6 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 		oTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		gameState = new TicTacToeState();
-		gameState.setSquare(0, SquareState.X);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -60,8 +63,6 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 		
 		batch.begin();
 		
-		final float xSize = Gdx.graphics.getWidth() / TicTacToeState.SQUARES_X;
-		final float ySize = Gdx.graphics.getHeight() / TicTacToeState.SQUARES_Y;
 		for (int xpos=0; xpos<TicTacToeState.SQUARES_X; xpos++) {
 			for (int ypos=0; ypos<TicTacToeState.SQUARES_Y; ypos++) {
 				batch.draw(getTextureForSquareState(gameState.getSquare(xpos, ypos)), xpos * xSize, ypos * ySize, xSize, ySize);
@@ -84,6 +85,8 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public void resize(int width, int height) {
 		Gdx.app.log(LOG, "resize width=" + width + " height=" + height);
+		xSize = width / TicTacToeState.SQUARES_X;
+		ySize = height / TicTacToeState.SQUARES_Y;
 	}
 
 	@Override
@@ -116,7 +119,17 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Gdx.app.log(LOG, "touchDown screenX=" + screenX + " screenY=" + screenY);
+		gameState.setSquare(getArrayPos(screenX, screenY), SquareState.X);
 		return false;
+	}
+	
+	private int getArrayPos(int screenX, int screenY) {
+		int x = screenX / (int)xSize;
+		int y = screenY / (int)ySize;
+		y = TicTacToeState.SQUARES_Y - 1 - y;
+		int result = y * TicTacToeState.SQUARES_X + x;
+		Gdx.app.log(LOG, "getArrayPos return=" + result);
+		return result;
 	}
 
 	@Override

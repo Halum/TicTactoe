@@ -1,5 +1,7 @@
 package com.iluwatar.tictactoe;
 
+import java.util.Random;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -119,10 +121,39 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Gdx.app.log(LOG, "touchDown screenX=" + screenX + " screenY=" + screenY);
-		gameState.setSquare(getArrayPos(screenX, screenY), SquareState.X);
+		int arrayPos = getArrayPos(screenX, screenY);
+		if (gameState.getSquare(arrayPos) == SquareState.FREE) {
+			gameState.setSquare(arrayPos, SquareState.X);
+			makeMove();
+		}
 		return false;
 	}
 	
+	private void makeMove() {
+		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
+			Gdx.app.exit();
+			return;
+		}
+		while (true) {
+			int x = randomInteger(0, TicTacToeState.SQUARES_X-1);
+			int y = randomInteger(0, TicTacToeState.SQUARES_Y-1);
+			if (gameState.getSquare(x, y) == SquareState.FREE) {
+				gameState.setSquare(x, y, SquareState.O);
+				break;
+			}
+		}
+		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
+			Gdx.app.exit();
+			return;
+		}
+	}
+	
+	private int randomInteger(int min, int max) {
+		Random rand = new Random();
+		int randomNum = rand.nextInt(max - min + 1) + min;
+		return randomNum;
+	}
+
 	private int getArrayPos(int screenX, int screenY) {
 		int x = screenX / (int)xSize;
 		int y = screenY / (int)ySize;

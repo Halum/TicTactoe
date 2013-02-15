@@ -14,6 +14,7 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private TicTacToePlayScreen playScreen;
+	private TicTacToeMenuScreen menuScreen;
 	
 	@Override
 	public void create() {
@@ -22,11 +23,13 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 		camera = new OrthographicCamera(w, h);
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(this);
+		menuScreen = new TicTacToeMenuScreen();
 		playScreen  = new TicTacToePlayScreen();
 	}
 
 	@Override
 	public void dispose() {
+		menuScreen.dispose();
 		playScreen.dispose();
 		batch.dispose();
 	}
@@ -38,7 +41,8 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 		
 		batch.begin();
 		
-		playScreen.render(batch);
+		menuScreen.render(batch);
+		//playScreen.render(batch);
 		
 		batch.end();
 	}
@@ -46,6 +50,7 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public void resize(int width, int height) {
 		Gdx.app.log(LOG, "resize width=" + width + " height=" + height);
+		menuScreen.resize(width, height);
 		playScreen.resize(width, height);
 	}
 
@@ -79,7 +84,8 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Gdx.app.log(LOG, "touchDown screenX=" + screenX + " screenY=" + screenY);
-		playScreen.touchDown(screenX, screenY, pointer, button);
+		menuScreen.touchDown(screenX, screenY, pointer, button);
+		//playScreen.touchDown(screenX, screenY, pointer, button);
 		return false;
 	}
 	

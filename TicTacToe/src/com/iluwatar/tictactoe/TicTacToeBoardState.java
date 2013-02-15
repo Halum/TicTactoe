@@ -1,6 +1,6 @@
 package com.iluwatar.tictactoe;
 
-public class TicTacToeState {
+public class TicTacToeBoardState {
 
 	public enum SquareState {FREE, X, O};
 
@@ -10,7 +10,7 @@ public class TicTacToeState {
 	
 	private SquareState squares[] = new SquareState[ARRAY_COUNT];
 	
-	public TicTacToeState() {
+	public TicTacToeBoardState() {
 		for (int i=0; i<ARRAY_COUNT; i++) {
 			setSquare(i, SquareState.FREE);
 		}

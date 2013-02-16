@@ -1,7 +1,5 @@
 package com.iluwatar.tictactoe;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -20,6 +18,8 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 	float xSize;
 	float ySize;
 	private ScreenCallback callback;
+	
+	BaseOpponent opponent = new EasyOpponent();
 	
 	public TicTacToePlayScreen(ScreenCallback callback) {
 		this.callback = callback;
@@ -82,24 +82,13 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 			callback.endScreen(TicTacToeScreen.MENU);
 			return;
 		}
-		while (true) {
-			int x = randomInteger(0, TicTacToeBoardState.SQUARES_X-1);
-			int y = randomInteger(0, TicTacToeBoardState.SQUARES_Y-1);
-			if (gameState.getSquare(x, y) == SquareState.FREE) {
-				gameState.setSquare(x, y, SquareState.O);
-				break;
-			}
-		}
+		
+		opponent.makeMove(gameState);
+		
 		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
 			callback.endScreen(TicTacToeScreen.MENU);
 			return;
 		}
-	}
-
-	private int randomInteger(int min, int max) {
-		Random rand = new Random();
-		int randomNum = rand.nextInt(max - min + 1) + min;
-		return randomNum;
 	}
 	
 	private int getArrayPos(int screenX, int screenY) {

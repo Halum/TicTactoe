@@ -1,13 +1,17 @@
 package com.iluwatar.tictactoe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
-public class TicTacToeGame implements ApplicationListener, InputProcessor {
+public class TicTacToeGame implements ApplicationListener, InputProcessor, ScreenCallback {
 	
 	private static final String LOG = TicTacToeGame.class.getSimpleName() + "." + TicTacToeUtils.getMethodName(0);
 	
@@ -15,6 +19,7 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	private SpriteBatch batch;
 	private TicTacToePlayScreen playScreen;
 	private TicTacToeMenuScreen menuScreen;
+	private List<TicTacToeBaseScreen> screens = new ArrayList<TicTacToeBaseScreen>();
 	
 	@Override
 	public void create() {
@@ -23,14 +28,19 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 		camera = new OrthographicCamera(w, h);
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(this);
-		menuScreen = new TicTacToeMenuScreen();
-		playScreen  = new TicTacToePlayScreen();
+		menuScreen = new TicTacToeMenuScreen(this);
+		menuScreen.setActive(true);
+		playScreen  = new TicTacToePlayScreen(this);
+		playScreen.setActive(false);
+		screens.add(menuScreen);
+		screens.add(playScreen);
 	}
 
 	@Override
 	public void dispose() {
-		menuScreen.dispose();
-		playScreen.dispose();
+		for (TicTacToeBaseScreen s: screens) {
+			s.dispose();
+		}
 		batch.dispose();
 	}
 
@@ -41,8 +51,11 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 		
 		batch.begin();
 		
-		menuScreen.render(batch);
-		//playScreen.render(batch);
+		for (TicTacToeBaseScreen s: screens) {
+			if (s.isActive()) {
+				s.render(batch);
+			}
+		}
 		
 		batch.end();
 	}
@@ -50,8 +63,9 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public void resize(int width, int height) {
 		Gdx.app.log(LOG, "resize width=" + width + " height=" + height);
-		menuScreen.resize(width, height);
-		playScreen.resize(width, height);
+		for (TicTacToeBaseScreen s: screens) {
+			s.resize(width, height);
+		}
 	}
 
 	@Override
@@ -84,7 +98,13 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		Gdx.app.log(LOG, "touchDown screenX=" + screenX + " screenY=" + screenY);
-		menuScreen.touchDown(screenX, screenY, pointer, button);
+		for (TicTacToeBaseScreen s: screens) {
+			if (s.isActive()) {
+				s.touchDown(screenX, screenY, pointer, button);
+				break;
+			}
+		}
+		//menuScreen.touchDown(screenX, screenY, pointer, button);
 		//playScreen.touchDown(screenX, screenY, pointer, button);
 		return false;
 	}
@@ -111,5 +131,19 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor {
 	public boolean scrolled(int amount) {
 		Gdx.app.log(LOG, "scrolled");
 		return false;
+	}
+
+	@Override
+	public void endScreen(TicTacToeScreen nextScreen) {
+		if (nextScreen == TicTacToeScreen.PLAY) {
+			menuScreen.setActive(false);
+			playScreen.setActive(true);
+			playScreen.initBoard();
+		} else if (nextScreen == TicTacToeScreen.EXIT) {
+			Gdx.app.exit();
+		} else if (nextScreen == TicTacToeScreen.MENU) {
+			menuScreen.setActive(true);
+			playScreen.setActive(false);
+		}
 	}
 }

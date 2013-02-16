@@ -60,4 +60,5 @@ public abstract class TicTacToeBaseScreen {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	
 }

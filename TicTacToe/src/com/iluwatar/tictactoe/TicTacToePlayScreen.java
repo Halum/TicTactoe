@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.iluwatar.tictactoe.TicTacToeBoardState.SquareState;
+import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
 public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 
@@ -18,8 +19,10 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 	
 	float xSize;
 	float ySize;
+	private ScreenCallback callback;
 	
-	public TicTacToePlayScreen() {
+	public TicTacToePlayScreen(ScreenCallback callback) {
+		this.callback = callback;
 		bgTexture = new Texture(Gdx.files.internal("data/bg.png"));
 		bgTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		xTexture = new Texture(Gdx.files.internal("data/x.png"));
@@ -76,7 +79,7 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 
 	private void makeMove() {
 		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
-			Gdx.app.exit();
+			callback.endScreen(TicTacToeScreen.MENU);
 			return;
 		}
 		while (true) {
@@ -88,7 +91,7 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 			}
 		}
 		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
-			Gdx.app.exit();
+			callback.endScreen(TicTacToeScreen.MENU);
 			return;
 		}
 	}
@@ -107,5 +110,8 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 		return result;
 	}
 	
+	public void initBoard() {
+		gameState = new TicTacToeBoardState();
+	}
 	
 }

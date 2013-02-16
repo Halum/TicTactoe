@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
 public class TicTacToeMenuScreen extends TicTacToeBaseScreen {
 	
@@ -12,8 +13,10 @@ public class TicTacToeMenuScreen extends TicTacToeBaseScreen {
 	private int y;
 	private int dx;
 	private int dy;
+	private ScreenCallback callback;
 	
-	TicTacToeMenuScreen() {
+	TicTacToeMenuScreen(ScreenCallback callback) {
+		this.callback = callback;
 		menuTexture = new Texture(Gdx.files.internal("data/menu.png"));
 		menuTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
@@ -38,7 +41,7 @@ public class TicTacToeMenuScreen extends TicTacToeBaseScreen {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Gdx.app.exit();
+		callback.endScreen(TicTacToeScreen.PLAY);
 		return false;
 	}
 	

@@ -80,13 +80,13 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 
 	@Override
 	public boolean keyDown(int keycode) {
-		Gdx.app.log(LOG, "keyDown keycode=" + keycode);
+		//Gdx.app.log(LOG, "keyDown keycode=" + keycode);
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		Gdx.app.log(LOG, "keyUp keycode=" + keycode);
+		//Gdx.app.log(LOG, "keyUp keycode=" + keycode);
 		return false;
 	}
 
@@ -111,13 +111,13 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		Gdx.app.log(LOG, "touchUp");
+		//Gdx.app.log(LOG, "touchUp");
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		Gdx.app.log(LOG, "touchDragged");
+		//Gdx.app.log(LOG, "touchDragged");
 		return false;
 	}
 
@@ -129,21 +129,27 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 
 	@Override
 	public boolean scrolled(int amount) {
-		Gdx.app.log(LOG, "scrolled");
+		//Gdx.app.log(LOG, "scrolled");
 		return false;
 	}
 
 	@Override
 	public void endScreen(TicTacToeScreen nextScreen) {
-		if (nextScreen == TicTacToeScreen.PLAY) {
-			menuScreen.setActive(false);
-			playScreen.setActive(true);
-			playScreen.initBoard();
-		} else if (nextScreen == TicTacToeScreen.EXIT) {
+		if (nextScreen == TicTacToeScreen.EXIT) {
 			Gdx.app.exit();
 		} else if (nextScreen == TicTacToeScreen.MENU) {
 			menuScreen.setActive(true);
 			playScreen.setActive(false);
 		}
 	}
+	
+	public void endScreen(TicTacToeScreen nextScreen, int parameter) {
+		if (nextScreen == TicTacToeScreen.PLAY) {
+			menuScreen.setActive(false);
+			playScreen.setActive(true);
+			playScreen.initBoard();
+			playScreen.initOpponent(parameter);
+		}
+	}
+	
 }

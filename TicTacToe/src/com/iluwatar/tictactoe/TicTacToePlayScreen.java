@@ -9,6 +9,8 @@ import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
 public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 
+	private static final String LOG = TicTacToeGame.class.getSimpleName() + "." + TicTacToeUtils.getMethodName(0);
+	
 	private Texture bgTexture;
 	private Texture oTexture;
 	private Texture xTexture;
@@ -103,4 +105,14 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 		gameState = new TicTacToeBoardState();
 	}
 	
+	public void initOpponent(int parameter) {
+		
+		Gdx.app.log(LOG, "opponent=" + parameter);
+		
+		switch (parameter) {
+			case 0: opponent = new EasyOpponent(); break;
+			case 1: opponent = new EasyOpponent(); break;
+			case 2: opponent = new EasyOpponent(); break;
+		}
+	}
 }

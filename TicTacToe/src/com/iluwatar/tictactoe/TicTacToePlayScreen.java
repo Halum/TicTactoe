@@ -111,7 +111,7 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 		
 		switch (parameter) {
 			case 0: opponent = new EasyOpponent(); break;
-			case 1: opponent = new EasyOpponent(); break;
+			case 1: opponent = new MediumOpponent(); break;
 			case 2: opponent = new EasyOpponent(); break;
 		}
 	}

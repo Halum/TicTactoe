@@ -1,5 +1,10 @@
 package com.iluwatar.tictactoe;
 
+/**
+ * Holds board state.
+ * @author Ilkka
+ *
+ */
 public class TicTacToeBoardState {
 
 	public enum SquareState {FREE, X, O};

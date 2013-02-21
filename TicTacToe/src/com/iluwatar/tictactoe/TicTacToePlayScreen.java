@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.iluwatar.tictactoe.TicTacToeBoardState.SquareState;
+import com.iluwatar.tictactoe.TicTacToeGameState.GameResult;
 import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
 public class TicTacToePlayScreen extends TicTacToeBaseScreen {
@@ -81,14 +82,34 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 
 	private void makeMove() {
 		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
-			callback.endScreen(TicTacToeScreen.MENU);
+			if (gameState.isFinished()) {
+				callback.getGameState().setLastResult(GameResult.TIE);
+				callback.getGameState().incrementTies();
+			} else if (gameState.isWinnerX()) {
+				callback.getGameState().setLastResult(GameResult.WIN);
+				callback.getGameState().incrementWins();
+			} else if (gameState.isWinnerO()) {
+				callback.getGameState().setLastResult(GameResult.LOSE);
+				callback.getGameState().incrementLosses();
+			}
+			callback.endScreen(TicTacToeScreen.RESULTS);
 			return;
 		}
 		
 		opponent.makeMove(gameState);
 		
 		if (gameState.isFinished() || gameState.isWinnerX() || gameState.isWinnerO()) {
-			callback.endScreen(TicTacToeScreen.MENU);
+			if (gameState.isFinished()) {
+				callback.getGameState().setLastResult(GameResult.TIE);
+				callback.getGameState().incrementTies();
+			} else if (gameState.isWinnerX()) {
+				callback.getGameState().setLastResult(GameResult.WIN);
+				callback.getGameState().incrementWins();
+			} else if (gameState.isWinnerO()) {
+				callback.getGameState().setLastResult(GameResult.LOSE);
+				callback.getGameState().incrementLosses();
+			}
+			callback.endScreen(TicTacToeScreen.RESULTS);
 			return;
 		}
 	}
@@ -112,7 +133,7 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 		switch (parameter) {
 			case 0: opponent = new EasyOpponent(); break;
 			case 1: opponent = new MediumOpponent(); break;
-			case 2: opponent = new EasyOpponent(); break;
+			case 2: opponent = new HardOpponent(); break;
 		}
 	}
 }

@@ -20,6 +20,10 @@ public class TicTacToeBoardState {
 			setSquare(i, SquareState.FREE);
 		}
 	}
+
+	public TicTacToeBoardState(TicTacToeBoardState state) {
+		System.arraycopy(state.squares, 0, this.squares, 0, state.squares.length);
+	}
 	
 	public void setSquare(int arrayPos, SquareState state) {
 		squares[arrayPos] = state;

@@ -19,7 +19,9 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 	private SpriteBatch batch;
 	private TicTacToePlayScreen playScreen;
 	private TicTacToeMenuScreen menuScreen;
+	private TicTacToeResultsScreen resultsScreen;
 	private List<TicTacToeBaseScreen> screens = new ArrayList<TicTacToeBaseScreen>();
+	private TicTacToeGameState gameState = new TicTacToeGameState();
 	
 	@Override
 	public void create() {
@@ -32,8 +34,11 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 		menuScreen.setActive(true);
 		playScreen  = new TicTacToePlayScreen(this);
 		playScreen.setActive(false);
+		resultsScreen = new TicTacToeResultsScreen(this);
+		resultsScreen.setActive(false);
 		screens.add(menuScreen);
 		screens.add(playScreen);
+		screens.add(resultsScreen);
 	}
 
 	@Override
@@ -104,8 +109,6 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 				break;
 			}
 		}
-		//menuScreen.touchDown(screenX, screenY, pointer, button);
-		//playScreen.touchDown(screenX, screenY, pointer, button);
 		return false;
 	}
 	
@@ -140,6 +143,11 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 		} else if (nextScreen == TicTacToeScreen.MENU) {
 			menuScreen.setActive(true);
 			playScreen.setActive(false);
+			resultsScreen.setActive(false);
+		} else if (nextScreen == TicTacToeScreen.RESULTS) {
+			menuScreen.setActive(false);
+			playScreen.setActive(false);
+			resultsScreen.setActive(true);
 		}
 	}
 	
@@ -147,9 +155,15 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 		if (nextScreen == TicTacToeScreen.PLAY) {
 			menuScreen.setActive(false);
 			playScreen.setActive(true);
+			resultsScreen.setActive(false);
 			playScreen.initBoard();
 			playScreen.initOpponent(parameter);
 		}
+	}
+
+	@Override
+	public TicTacToeGameState getGameState() {
+		return gameState;
 	}
 	
 }

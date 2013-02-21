@@ -62,4 +62,41 @@ public abstract class BaseMove {
 		}
 		return ((numTarget == 2) && (numFree == 1));
 	}
+
+	/**
+	 * Tests if the given move creates a fork
+	 * @param state
+	 * @param ss
+	 * @param move
+	 * @return true if fork is created with this move
+	 */
+	protected boolean moveCreatesFork(TicTacToeBoardState state, SquareState ss, Point move) {
+		
+		state.setSquare(move.x, move.y, ss);
+
+		int numFound = 0;
+		
+		for (int y=0; y<3; y++) {
+			if (rowHasTwoOfTheseAndOneFree(state, ss, 0, y, 1, 0, new Point())) {
+				numFound++;
+			}
+		}
+
+		for (int x=0; x<3; x++) {
+			if (rowHasTwoOfTheseAndOneFree(state, SquareState.O, x, 0, 0, 1, new Point())) {
+				numFound++;
+			}
+		}
+
+		if (rowHasTwoOfTheseAndOneFree(state, SquareState.O, 0, 0, 1, 1, new Point())) {
+			numFound++;
+		}
+
+		if (rowHasTwoOfTheseAndOneFree(state, SquareState.O, 0, 2, 1, -1, new Point())) {
+			numFound++;
+		}
+		
+		return (numFound>=2);
+	}
+	
 }

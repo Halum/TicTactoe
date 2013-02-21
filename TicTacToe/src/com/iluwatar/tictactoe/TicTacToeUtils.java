@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class TicTacToeUtils {
 
-	enum TicTacToeScreen {MENU, PLAY, EXIT};
+	enum TicTacToeScreen {MENU, PLAY, RESULTS, EXIT};
 	
 	public static String getMethodName(final int depth)
 	{

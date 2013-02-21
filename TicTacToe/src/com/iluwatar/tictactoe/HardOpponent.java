@@ -15,6 +15,13 @@ public class HardOpponent extends BaseOpponent {
 //				Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
 //				Empty corner: The player plays in a corner square.
 //				Empty side: The player plays in a middle square on any of the 4 sides.
+
+		BaseMove chain = new WinMove();
+		BaseMove node = chain.setNextMove(new BlockMove());
+		node = node.setNextMove(new ForkMove());
+		node = node.setNextMove(new BlockForkMove());
+		node.setNextMove(new RandomMove());
+		chain.move(state);
 		
 	}
 

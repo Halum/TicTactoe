@@ -1,6 +1,5 @@
 package com.iluwatar.tictactoe;
 
-import java.awt.Point;
 
 import com.iluwatar.tictactoe.TicTacToeBoardState.SquareState;
 

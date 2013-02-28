@@ -24,11 +24,15 @@ public class TicTacToeResultsScreen extends TicTacToeBaseScreen {
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		font.dispose();
 	}
 
 	@Override
-	public void render(SpriteBatch batch) {
+	public void render() {
+		
+		batch.begin();
+		
 		font.setColor(1, 1, 1, 1);
 		font.setScale(this.dx / 240, this.dy / 160);
 
@@ -44,6 +48,8 @@ public class TicTacToeResultsScreen extends TicTacToeBaseScreen {
 				callback.getGameState().getTies() + " - " + 
 				callback.getGameState().getLosses();
 		renderStringCentered(batch, font, s, this.dy / 10 * 4, this.dx);
+		
+		batch.end();
 	}
 	
 	private void renderStringCentered(SpriteBatch batch, BitmapFont font, String s, int yPos, int screenWidth) {

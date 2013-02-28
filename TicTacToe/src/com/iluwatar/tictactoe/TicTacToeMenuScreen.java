@@ -3,7 +3,6 @@ package com.iluwatar.tictactoe;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
@@ -37,12 +36,15 @@ public class TicTacToeMenuScreen extends TicTacToeBaseScreen {
 
 	@Override
 	public void dispose() {
+		super.dispose();
 		menuTexture.dispose();
 	}
 
 	@Override
-	public void render(SpriteBatch batch) {
+	public void render() {
+		batch.begin();
 		batch.draw(menuTexture, x, y, dx, dy);
+		batch.end();
 	}
 	
 	@Override

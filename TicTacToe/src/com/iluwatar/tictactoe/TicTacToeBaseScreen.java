@@ -6,10 +6,19 @@ public abstract class TicTacToeBaseScreen {
 	
 	private boolean active = false;
 	
-	public void dispose() {
+	protected SpriteBatch batch;
+	
+	protected float elapsedTime;
+	
+	TicTacToeBaseScreen() {
+		batch = new SpriteBatch();
 	}
 	
-	public void render(SpriteBatch batch) {
+	public void dispose() {
+		batch.dispose();
+	}
+	
+	public void render() {
 	}
 	
 	public void resize(int width, int height) {
@@ -59,6 +68,10 @@ public abstract class TicTacToeBaseScreen {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	public void timeElapsed(float time) {
+		elapsedTime += time;
 	}
 	
 }

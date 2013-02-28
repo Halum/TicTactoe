@@ -41,7 +41,7 @@ public class TicTacToeBoardState {
 		return squares[yPos*SQUARES_X+xPos];
 	}
 	
-	public boolean isFinished() {
+	public boolean isFull() {
 		for (int i=0; i<ARRAY_COUNT; i++) {
 			if (getSquare(i) == SquareState.FREE) {
 				return false;
@@ -50,15 +50,20 @@ public class TicTacToeBoardState {
 		return true;
 	}
 	
-	public boolean isWinnerX() {
-		return checkForWin(SquareState.X);
+	public boolean isGameOver() {
+		WinningLine line = new WinningLine();
+		return (isFull() || isWinnerX(line) || isWinnerO(line));
 	}
 	
-	public boolean isWinnerO() {
-		return checkForWin(SquareState.O);
+	public boolean isWinnerX(WinningLine line) {
+		return checkForWin(SquareState.X, line);
 	}
 	
-	private boolean checkForWin(SquareState ss) {
+	public boolean isWinnerO(WinningLine line) {
+		return checkForWin(SquareState.O, line);
+	}
+	
+	private boolean checkForWin(SquareState ss, WinningLine line) {
 
 		boolean found;
 		
@@ -71,6 +76,10 @@ public class TicTacToeBoardState {
 				}
 			}
 			if (found) {
+				line.start.x = i;
+				line.start.y = 0;
+				line.end.x = i;
+				line.end.y = SQUARES_Y-1;
 				return true;
 			}
 		}
@@ -84,6 +93,10 @@ public class TicTacToeBoardState {
 				}
 			}
 			if (found) {
+				line.start.x = 0;
+				line.start.y = j;
+				line.end.x = SQUARES_X-1;
+				line.end.y = j;
 				return true;
 			}
 		}
@@ -96,6 +109,10 @@ public class TicTacToeBoardState {
 			}
 		}
 		if (found) {
+			line.start.x = 0;
+			line.start.y = 0;
+			line.end.x = SQUARES_X-1;
+			line.end.y = SQUARES_Y-1;
 			return true;
 		}
 
@@ -107,10 +124,18 @@ public class TicTacToeBoardState {
 			}
 		}
 		if (found) {
+			line.start.x = 0;
+			line.start.y = SQUARES_Y-1;
+			line.end.x = SQUARES_X-1;
+			line.end.y = 0;
 			return true;
 		}
 		
 		return false;
 	}
 	
+	public static class WinningLine {
+		public Point start = new Point();
+		public Point end = new Point();
+	}
 }

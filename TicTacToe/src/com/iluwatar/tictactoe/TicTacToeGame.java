@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.iluwatar.tictactoe.TicTacToeUtils.TicTacToeScreen;
 
 public class TicTacToeGame implements ApplicationListener, InputProcessor, ScreenCallback {
@@ -16,19 +15,19 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 	private static final String LOG = TicTacToeGame.class.getSimpleName() + "." + TicTacToeUtils.getMethodName(0);
 	
 	private OrthographicCamera camera;
-	private SpriteBatch batch;
 	private TicTacToePlayScreen playScreen;
 	private TicTacToeMenuScreen menuScreen;
 	private TicTacToeResultsScreen resultsScreen;
 	private List<TicTacToeBaseScreen> screens = new ArrayList<TicTacToeBaseScreen>();
 	private TicTacToeGameState gameState = new TicTacToeGameState();
+	private int dx;
+	private int dy;
 	
 	@Override
 	public void create() {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(w, h);
-		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(this);
 		menuScreen = new TicTacToeMenuScreen(this);
 		menuScreen.setActive(true);
@@ -46,7 +45,6 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 		for (TicTacToeBaseScreen s: screens) {
 			s.dispose();
 		}
-		batch.dispose();
 	}
 
 	@Override
@@ -54,20 +52,21 @@ public class TicTacToeGame implements ApplicationListener, InputProcessor, Scree
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		batch.begin();
+		float elapsedTime = Gdx.graphics.getDeltaTime();
 		
 		for (TicTacToeBaseScreen s: screens) {
+			s.timeElapsed(elapsedTime);
 			if (s.isActive()) {
-				s.render(batch);
+				s.render();
 			}
 		}
-		
-		batch.end();
 	}
 	
 	@Override
 	public void resize(int width, int height) {
 		Gdx.app.log(LOG, "resize width=" + width + " height=" + height);
+		dx = width;
+		dy = height;
 		for (TicTacToeBaseScreen s: screens) {
 			s.resize(width, height);
 		}

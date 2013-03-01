@@ -94,10 +94,10 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 					ShapeRenderer renderer = new ShapeRenderer();
 					renderer.begin(ShapeType.Line);
 					renderer.setColor(1, 0, 0, 0.5f);
-					Gdx.app.log(LOG, "(" + getSquareCenterX(line.start.x) + "," + 
-							getSquareCenterY(line.start.y) + "  " + 
-							getSquareCenterX(line.end.x) + "," + 
-							getSquareCenterY(line.end.y) + ")");
+//					Gdx.app.log(LOG, "(" + getSquareCenterX(line.start.x) + "," + 
+//							getSquareCenterY(line.start.y) + "  " + 
+//							getSquareCenterX(line.end.x) + "," + 
+//							getSquareCenterY(line.end.y) + ")");
 					renderer.line(getSquareCenterX(line.start.x), 
 							getSquareCenterY(line.start.y), 
 							getSquareCenterX(line.end.x), 
@@ -213,7 +213,6 @@ public class TicTacToePlayScreen extends TicTacToeBaseScreen {
 			if (isPlayerMove()) { 
 				return false;
 			}
-			Gdx.app.log(LOG, "elapsed: " + (elapsedTime-3) + " last: " + lastPlayerMove);
 			return ((elapsedTime-1) >= lastPlayerMove);
 		}
 		
